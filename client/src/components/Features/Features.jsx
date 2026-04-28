@@ -7,7 +7,7 @@ function Features() {
             <h2 className="sr-only">Features</h2>
 
             {FeaturesData.map((feat) => (
-                <div className="feature-item">
+                <div className="feature-item" key={feat.id}>
                     <img
                         src={feat.img}
                         alt={feat.alt}
