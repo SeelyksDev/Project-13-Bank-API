@@ -22,17 +22,23 @@
             width: 200px;
         }
     }
-
-    .main-nav-item {
-        text-decoration: none;
-        margin-right: 0.5rem;
-
-        &:hover {
-            text-decoration: underline;
+    .wrapper-links {
+        &:has(.sign-out-btn) {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
         }
 
-        .fa {
-            margin-right: 4px;
+        .main-nav-item {
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+
+            .fa {
+                margin-right: 4px;
+            }
         }
     }
 }

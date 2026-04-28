@@ -1,8 +1,12 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import Logo from "../../assets/png/logo.png";
 import "./Header.scss";
 
 function Header() {
+
+  const location = useLocation();
+  const isUserPage = location.pathname === "/user";
+
     return (
         <header>
             <nav className="main-nav">
@@ -14,7 +18,7 @@ function Header() {
                     />
                     <h1 className="sr-only">Argent Bank</h1>
                 </NavLink>
-                <div>
+                <div className="wrapper-links">
                     <NavLink
                         to="/sign-in"
                         className="main-nav-item"
@@ -23,6 +27,13 @@ function Header() {
                         <i className="fa fa-user-circle"></i>
                         Sign In
                     </NavLink>
+
+                    {isUserPage && (
+                        <NavLink to="/" className="main-nav-item sign-out-btn" title="Accueil">
+                            <i className="fa fa-sign-out"></i>
+                            Sign Out
+                        </NavLink>
+                    )}
                 </div>
             </nav>
         </header>
