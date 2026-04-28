@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./layout/Header/Header";
 import Home from "./pages/Home/Home";
+import SignIn from "./pages/SignIn/SignIn";
 import Footer from "./layout/Footer/Footer";
 import "./styles/_normalize.scss";
 
@@ -10,8 +11,8 @@ function App() {
             <Header />
             <Routes>
                 <Route path="/" element={<Home />} />
-                {/* <Route />
-                <Route />*/}
+                 <Route path="/sign-in" element={<SignIn />} />
+                {/* <Route /> */}
             </Routes>
             <Footer />
         </BrowserRouter>
