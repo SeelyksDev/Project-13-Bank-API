@@ -1,13 +1,61 @@
 .header {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
     color: #fff;
     margin-bottom: 2rem;
 
-    .edit-button {
+    .edit-button,
+    .edit-name-btn {
         border-color: #00bc77;
         background-color: #00bc77;
         color: #fff;
         font-weight: bold;
         padding: 10px;
+        cursor: pointer;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .inputs-wrapper,
+        .buttons-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .inputs-wrapper {
+            input {
+                height: 25px;
+                border-radius: 5px;
+                padding-left: 5px;
+
+                &::placeholder {
+                    font-weight: bold;
+                    color: black;
+                    padding-left: 5px;
+                }
+
+                &:focus {
+                    outline: none;
+                    border: 3px solid #00bc77;
+                }
+            }
+        }
+
+        .edit-name-btn {
+            border-radius: 5px;
+            padding: 5px 10px;
+            width: 100px;
+
+            &:active {
+                border: none;
+            }
+        }
     }
 }
 
