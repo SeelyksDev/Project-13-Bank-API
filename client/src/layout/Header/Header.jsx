@@ -5,7 +5,7 @@ import "./Header.scss";
 function Header() {
 
   const location = useLocation();
-  const isUserPage = location.pathname === "/user";
+  const isProfilePage = location.pathname === "/profile";
 
     return (
         <header>
@@ -28,7 +28,7 @@ function Header() {
                         Sign In
                     </NavLink>
 
-                    {isUserPage && (
+                    {isProfilePage && (
                         <NavLink to="/" className="main-nav-item sign-out-btn" title="Accueil">
                             <i className="fa fa-sign-out"></i>
                             Sign Out
