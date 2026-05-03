@@ -23,10 +23,13 @@
         }
     }
     .wrapper-links {
+        margin-right: 0.5rem;
+
         &:has(.sign-out-btn) {
             display: flex;
             align-items: center;
             gap: 0.7rem;
+            margin-right: 0;
         }
 
         .main-nav-item {
