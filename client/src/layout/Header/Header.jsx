@@ -20,7 +20,7 @@ function Header() {
                 </NavLink>
                 <div className="wrapper-links">
                     <NavLink
-                        to="/sign-in"
+                        to="/login"
                         className="main-nav-item"
                         title="Connexion"
                     >
