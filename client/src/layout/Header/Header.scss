@@ -39,6 +39,13 @@
             .fa {
                 margin-right: 4px;
             }
+
+            &.nav-no-link {
+                font-weight: bold;
+                &:hover {
+                    text-decoration: none;
+                }
+            }
         }
     }
 }

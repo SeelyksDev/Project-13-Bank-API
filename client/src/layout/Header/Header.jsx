@@ -3,9 +3,8 @@ import Logo from "../../assets/png/logo.png";
 import "./Header.scss";
 
 function Header() {
-
-  const location = useLocation();
-  const isProfilePage = location.pathname === "/profile";
+    const location = useLocation();
+    const isProfilePage = location.pathname === "/profile";
 
     return (
         <header>
@@ -19,17 +18,28 @@ function Header() {
                     <h1 className="sr-only">Argent Bank</h1>
                 </NavLink>
                 <div className="wrapper-links">
-                    <NavLink
-                        to="/login"
-                        className="main-nav-item"
-                        title="Connexion"
-                    >
-                        <i className="fa fa-user-circle"></i>
-                        Sign In
-                    </NavLink>
+                    {isProfilePage ? (
+                        <span className="main-nav-item nav-no-link">
+                            <i className="fa fa-user-circle"></i>
+                            Pseudo
+                        </span>
+                    ) : (
+                        <NavLink
+                            to="/login"
+                            className="main-nav-item"
+                            title="Connexion"
+                        >
+                            <i className="fa fa-user-circle"></i>
+                            Sign In
+                        </NavLink>
+                    )}
 
                     {isProfilePage && (
-                        <NavLink to="/" className="main-nav-item sign-out-btn" title="Accueil">
+                        <NavLink
+                            to="/"
+                            className="main-nav-item sign-out-btn"
+                            title="Accueil"
+                        >
                             <i className="fa fa-sign-out"></i>
                             Sign Out
                         </NavLink>
