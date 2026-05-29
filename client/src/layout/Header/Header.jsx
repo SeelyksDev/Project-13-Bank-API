@@ -1,10 +1,14 @@
 import { NavLink, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../../features/auth/authSlice";
 import Logo from "../../assets/png/logo.png";
 import "./Header.scss";
 
 function Header() {
+    const dispatch = useDispatch();
     const location = useLocation();
     const isProfilePage = location.pathname === "/profile";
+    const firstName = useSelector((state) => state.auth.firstName);
 
     return (
         <header>
@@ -21,7 +25,7 @@ function Header() {
                     {isProfilePage ? (
                         <span className="main-nav-item nav-no-link">
                             <i className="fa fa-user-circle"></i>
-                            Pseudo
+                            {firstName}
                         </span>
                     ) : (
                         <NavLink
@@ -39,6 +43,10 @@ function Header() {
                             to="/"
                             className="main-nav-item sign-out-btn"
                             title="Accueil"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                dispatch(logout());
+                            }}
                         >
                             <i className="fa fa-sign-out"></i>
                             Sign Out

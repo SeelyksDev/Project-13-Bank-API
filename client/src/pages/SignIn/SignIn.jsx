@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
     loginSuccess,
     profileSuccess,
@@ -12,7 +13,10 @@ import "./SignIn.scss";
 function SignIn() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [formError, setFormError] = useState(false);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const apiError = useSelector((state) => state.auth.error);
 
     return (
         <main className="main bg-dark">
@@ -22,14 +26,21 @@ function SignIn() {
                 <form
                     onSubmit={async (e) => {
                         e.preventDefault();
+
+                        if (!email.trim() || !password.trim()) {
+                            setFormError(true);
+                            return;
+                        }
+                        setFormError(false);
+
                         try {
                             const { token } = await loginApi(email, password);
-
                             dispatch(loginSuccess({ token }));
 
                             const { firstName, lastName } =
                                 await profileApi(token);
                             dispatch(profileSuccess({ firstName, lastName }));
+                            navigate("/profile");
                         } catch (err) {
                             dispatch(loginFailure(err.message));
                         }
@@ -41,6 +52,12 @@ function SignIn() {
                             type="email"
                             value={email}
                             id="username"
+                            style={{
+                                border:
+                                    formError && !email.trim()
+                                        ? "2px solid red"
+                                        : "",
+                            }}
                             onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
@@ -50,9 +67,21 @@ function SignIn() {
                             type="password"
                             value={password}
                             id="password"
+                            style={{
+                                border:
+                                    formError && !password.trim()
+                                        ? "2px solid red"
+                                        : "",
+                            }}
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
+                    {formError && (
+                        <p style={{ color: "red" }}>
+                            Veuillez remplir tous les champs
+                        </p>
+                    )}
+                    {apiError && <p style={{ color: "red" }}>{apiError}</p>}
                     <div className="input-remember">
                         <input type="checkbox" id="remember-me" />
                         <label htmlFor="remember-me">Remember me</label>

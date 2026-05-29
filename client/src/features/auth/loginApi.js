@@ -6,7 +6,6 @@ export const loginApi = async (email, password) => {
     });
 
     if (!response.ok) {
-        console.log("email ou mdp incorrect");
         throw new Error("Email ou mot de passe incorrect");
     }
 
