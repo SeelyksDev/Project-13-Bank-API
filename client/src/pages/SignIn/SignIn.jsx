@@ -14,6 +14,7 @@ function SignIn() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [formError, setFormError] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const apiError = useSelector((state) => state.auth.error);
@@ -37,12 +38,19 @@ function SignIn() {
                             const { token } = await loginApi(email, password);
                             dispatch(loginSuccess({ token }));
 
+                            if (rememberMe) {
+                                localStorage.setItem("token", token);
+                            } else {
+                                localStorage.removeItem("token");
+                            }
+
                             const { firstName, lastName } =
                                 await profileApi(token);
                             dispatch(profileSuccess({ firstName, lastName }));
                             navigate("/profile");
                         } catch (err) {
                             dispatch(loginFailure(err.message));
+                            setFormError(true);
                         }
                     }}
                 >
@@ -82,8 +90,14 @@ function SignIn() {
                         </p>
                     )}
                     {apiError && <p style={{ color: "red" }}>{apiError}</p>}
+
                     <div className="input-remember">
-                        <input type="checkbox" id="remember-me" />
+                        <input
+                            type="checkbox"
+                            id="remember-me"
+                            checked={rememberMe}
+                            onChange={(e) => setRememberMe(e.target.checked)}
+                        />
                         <label htmlFor="remember-me">Remember me</label>
                     </div>
                     <button className="sign-in-button" type="submit">
