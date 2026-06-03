@@ -110,11 +110,253 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
+
+  /user/accounts:
+    get:
+      tags:
+        - User Transactions
+      summary: User accounts list
+      description: API to get all user accounts
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+      security:
+        - Bearer: []
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Getting accounts successfully
+          schema:
+            $ref: '#/definitions/Accounts'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+
+  /user/account/transactions:
+    get:
+      tags:
+        - User Transactions
+      summary: User transactions for current month
+      description: API to get user transactions of current month, grouped by account
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: query
+          name: month
+          type: string
+          required: true
+          description: Month in YYYY-MM format
+        - in: query
+          name: accountId
+          type: integer
+          required: false
+          description: Filter by account id
+      security:
+        - Bearer: []
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Getting transactions successfully
+          schema:
+            $ref: '#/definitions/Transactions'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+
+  /user/account/transactions/{id}:
+    get:
+      tags:
+        - User Transactions
+      summary: User transaction details
+      description: API to get user transaction details
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: path
+          name: id
+          type: integer
+          required: true
+      security:
+        - Bearer: []
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Getting transaction details successfully
+          schema:
+            $ref: '#/definitions/TransactionDetails'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    put:
+      tags:
+        - User Transactions
+      summary: Edit transaction category
+      description: API to edit user transaction category
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: path
+          name: id
+          type: integer
+          required: true
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/TransactionCategoryBody'
+      security:
+        - Bearer: []
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Editing transaction category successfully
+          schema:
+            $ref: '#/definitions/TransactionCategoryResponse'
+        '400':
+          description: Invalid Field
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+
+  /user/account/transactions/{id}/note:
+    post:
+      tags:
+        - User Transactions
+      summary: Create transaction note
+      description: API to create a note on a transaction
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: path
+          name: id
+          type: integer
+          required: true
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/TransactionNoteBody'
+      security:
+        - Bearer: []
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Note created successfully
+          schema:
+            $ref: '#/definitions/TransactionNoteResponse'
+        '400':
+          description: Invalid Field
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    put:
+      tags:
+        - User Transactions
+      summary: Edit transaction note
+      description: API to edit a note on a transaction
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: path
+          name: id
+          type: integer
+          required: true
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/TransactionNoteBody'
+      security:
+        - Bearer: []
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Note edited successfully
+          schema:
+            $ref: '#/definitions/TransactionNoteResponse'
+        '400':
+          description: Invalid Field
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - User Transactions
+      summary: Delete transaction note
+      description: API to delete a note on a transaction
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: path
+          name: id
+          type: integer
+          required: true
+      security:
+        - Bearer: []
+      produces:
+        - application/json
+      responses:
+        '204':
+          description: Note deleted successfully (No Content)
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+
 securityDefinitions:
   Bearer:
     type: apiKey
     name: Authorization
     in: header
+
 definitions:
   User:
     properties:
@@ -164,3 +406,93 @@ definitions:
         type: string
       lastName:
         type: string
+  Accounts:
+    type: object
+    properties:
+      accounts:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: account id
+            name:
+              type: string
+              description: account name
+            balance:
+              type: number
+              description: account balance
+  Transactions:
+    type: object
+    properties:
+      transactions:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: transaction id
+            accountId:
+              type: integer
+              description: account id
+            accountName:
+              type: string
+              description: account name
+            date:
+              type: string
+              format: date
+            description:
+              type: string
+              description: transaction description
+            amount:
+              type: number
+              description: transaction amount
+            balance:
+              type: number
+              description: transaction balance
+  TransactionDetails:
+    type: object
+    properties:
+      id:
+        type: integer
+      date:
+        type: string
+        format: date
+      description:
+        type: string
+      amount:
+        type: number
+      balance:
+        type: number
+      transactionType:
+        type: string
+      category:
+        type: string
+      note:
+        type: string
+  TransactionCategoryBody:
+    type: object
+    properties:
+      category:
+        type: string
+        description: transaction category
+  TransactionCategoryResponse:
+    type: object
+    properties:
+      category:
+        type: string
+        description: updated transaction category
+  TransactionNoteBody:
+    type: object
+    properties:
+      note:
+        type: string
+        description: transaction note
+  TransactionNoteResponse:
+    type: object
+    properties:
+      note:
+        type: string
+        description: transaction note

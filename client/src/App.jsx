@@ -7,7 +7,11 @@ import SignIn from "./pages/SignIn/SignIn";
 import User from "./pages/User/User";
 import Footer from "./layout/Footer/Footer";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
-import { loginSuccess, profileSuccess } from "./features/auth/authSlice";
+import {
+    loginSuccess,
+    profileSuccess,
+    logout,
+} from "./features/auth/authSlice";
 import { profileApi } from "./features/auth/profileApi";
 import "./styles/_normalize.scss";
 
@@ -19,12 +23,19 @@ function App() {
         const token = localStorage.getItem("token");
         if (token) {
             dispatch(loginSuccess({ token }));
-            profileApi(token).then(({ firstName, lastName }) => {
-                dispatch(profileSuccess({ firstName, lastName }));
-                setLoading(false);
-            });
+            profileApi(token)
+                .then(({ firstName, lastName }) => {
+                    dispatch(profileSuccess({ firstName, lastName }));
+                })
+                .catch(() => {
+                    localStorage.removeItem("token");
+                    dispatch(logout());
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
         } else {
-            setTimeout(() => setLoading(false), 0);
+            setLoading(false);
         }
     }, [dispatch]);
 
