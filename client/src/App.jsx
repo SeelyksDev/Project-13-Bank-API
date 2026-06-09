@@ -20,24 +20,24 @@ function App() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (token) {
-            dispatch(loginSuccess({ token }));
-            profileApi(token)
-                .then(({ firstName, lastName }) => {
-                    dispatch(profileSuccess({ firstName, lastName }));
-                })
-                .catch(() => {
-                    localStorage.removeItem("token");
-                    dispatch(logout());
-                })
-                .finally(() => {
-                    setLoading(false);
-                });
-        } else {
-            setLoading(false);
-        }
-    }, [dispatch]);
+    const token = localStorage.getItem("token");
+    if (token) {
+        dispatch(loginSuccess({ token }));
+        profileApi(token)
+            .then(({ firstName, lastName }) => {
+                dispatch(profileSuccess({ firstName, lastName }));
+            })
+            .catch(() => {
+                localStorage.removeItem("token");
+                dispatch(logout());
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    } else {
+        Promise.resolve().then(() => setLoading(false));
+    }
+}, [dispatch]);
 
     if (loading) return null;
 
