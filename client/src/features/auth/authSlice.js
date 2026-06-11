@@ -28,8 +28,11 @@ export const authSlice = createSlice({
       state.lastName = null;
       state.error = null;
     },
+     clearError: (state) => {
+      state.error = null;
+    },
   },
 });
 
-export const { loginSuccess, profileSuccess, loginFailure, logout, updateUsername } = authSlice.actions;
+export const { loginSuccess, profileSuccess, loginFailure, logout, updateUsername, clearError } = authSlice.actions;
 export default authSlice.reducer;

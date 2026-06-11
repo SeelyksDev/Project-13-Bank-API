@@ -5,6 +5,7 @@ import {
     loginSuccess,
     profileSuccess,
     loginFailure,
+    clearError,
 } from "../../features/auth/authSlice";
 import { loginApi } from "../../features/auth/loginApi";
 import { profileApi } from "../../features/auth/profileApi";
@@ -50,7 +51,6 @@ function SignIn() {
                             navigate("/profile");
                         } catch (err) {
                             dispatch(loginFailure(err.message));
-                            setFormError(true);
                         }
                     }}
                 >
@@ -66,7 +66,10 @@ function SignIn() {
                                         ? "2px solid red"
                                         : "",
                             }}
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) => {
+                                setEmail(e.target.value);
+                                dispatch(clearError());
+                            }}
                         />
                     </div>
                     <div className="input-wrapper">
@@ -81,7 +84,10 @@ function SignIn() {
                                         ? "2px solid red"
                                         : "",
                             }}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                                dispatch(clearError());
+                            }}
                         />
                     </div>
                     {formError && (
